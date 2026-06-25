@@ -1,0 +1,49 @@
+/* ══ assentos.css ═══════════════════════════════════════════════════ */
+.assentos-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
+@media (max-width: 600px) { .assentos-stats { grid-template-columns: repeat(2,1fr); } }
+.assento-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 14px; text-align: center; }
+.assento-stat-value { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.03em; }
+.assento-stat-value.green  { color: var(--success); }
+.assento-stat-value.blue   { color: var(--info); }
+.assento-stat-value.red    { color: var(--error); }
+.assento-stat-value.purple { color: var(--accent); }
+.assento-stat-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 3px; }
+
+.openspace-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 18px; margin-bottom: 14px; }
+.openspace-card h3 { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+.seats-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.seat-btn {
+  width: 56px; display: flex; flex-direction: column; align-items: center; gap: 5px;
+  padding: 8px 4px; border-radius: var(--r-sm); border: 1.5px solid transparent;
+  cursor: pointer; font-size: 0.65rem; font-weight: 600;
+  transition: all var(--trans); font-family: inherit;
+}
+.seat-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
+.seat-btn.free     { background: var(--success-bg); border-color: var(--success); color: var(--success); }
+.seat-btn.reserved { background: var(--info-bg);    border-color: var(--info);    color: var(--info); }
+.seat-btn.busy     { background: var(--error-bg);   border-color: var(--error);   color: var(--error); cursor: not-allowed; }
+.seat-btn.free:hover     { transform: scale(1.1); box-shadow: 0 2px 10px rgba(22,163,74,0.3); }
+.seat-btn.reserved:hover { transform: scale(1.1); box-shadow: 0 2px 10px rgba(37,99,235,0.3); }
+
+.seats-legend { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
+.seats-legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--text-muted); }
+.seats-legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* ── Per-sala openspace card header ─────────────────────────────── */
+.openspace-card-header {
+  display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;
+}
+.openspace-thumb {
+  width: 72px; height: 54px; object-fit: cover; border-radius: var(--r-sm);
+  flex-shrink: 0; background: var(--surface-2);
+}
+.openspace-card-info h3 {
+  font-size: 1rem; font-weight: 700; color: var(--text);
+  letter-spacing: -0.02em; margin-bottom: 5px;
+}
+.openspace-meta {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 0.78rem; color: var(--text-muted); flex-wrap: wrap;
+}
+.openspace-meta span { display: flex; align-items: center; gap: 4px; }

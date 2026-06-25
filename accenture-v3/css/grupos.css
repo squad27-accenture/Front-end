@@ -1,0 +1,286 @@
+.grupos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.grupo-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: all var(--trans);
+}
+
+.grupo-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.grupo-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.grupo-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.grupo-card p {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: .82rem;
+}
+
+.grupo-membros {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.grupo-membro {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px;
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+}
+
+.grupo-membro-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+.grupo-membro-info strong {
+  display: block;
+  font-size: .8rem;
+  color: var(--text);
+}
+
+.grupo-membro-info small {
+  color: var(--text-muted);
+  font-size: .7rem;
+}
+
+.grupo-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.grupo-usuarios-lista {
+  max-height: 260px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 10px;
+  background: var(--surface-2);
+}
+
+.grupo-user-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 9px;
+  cursor: pointer;
+}
+
+.grupo-user-option input {
+  width: auto;
+}
+
+.grupo-empty {
+  padding: 32px;
+  text-align: center;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.grupo-convite-box {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.grupo-convite-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.grupo-convite-title strong {
+  font-size: .86rem;
+  color: var(--text);
+}
+
+.grupo-convite-title small {
+  color: var(--text-muted);
+  font-size: .72rem;
+}
+
+.grupo-convite-form {
+  display: flex;
+  gap: 8px;
+}
+
+.grupo-convite-form input {
+  flex: 1;
+}
+
+.grupo-convite-form button {
+  white-space: nowrap;
+}
+
+.grupo-convites-pendentes {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.grupo-convites-pendentes > strong {
+  font-size: .86rem;
+  color: var(--text);
+}
+
+.grupo-convites-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.grupo-convite-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 9px;
+}
+
+.grupo-convite-item span {
+  display: block;
+  font-size: .8rem;
+  color: var(--text);
+}
+
+.grupo-convite-item small {
+  display: block;
+  color: var(--text-muted);
+  font-size: .7rem;
+}
+
+#grupos-grid .grupo-membros.grupo-membros-collapsible {
+  display: none;
+  margin-top: 12px;
+}
+
+#grupos-grid .grupo-membros.grupo-membros-collapsible.open {
+  display: flex;
+}
+
+#grupos-grid .grupo-toggle-membros {
+  margin-left: auto;
+  white-space: nowrap;
+  padding: 7px 11px;
+  font-size: .78rem;
+}
+
+#grupos-grid .grupo-card-clean {
+  position: relative;
+  overflow: hidden;
+}
+
+#grupos-grid .grupo-card-clean::before,
+#grupos-grid .grupo-card-clean::after {
+  display: none !important;
+  content: none !important;
+}
+
+#grupos-grid .grupo-card-header-clean {
+  align-items: flex-start;
+  gap: 12px;
+}
+
+#grupos-grid .grupo-card-title-area {
+  min-width: 0;
+  flex: 1;
+}
+
+#grupos-grid .grupo-card-title-area h3 {
+  font-size: 1rem;
+  line-height: 1.15;
+}
+
+#grupos-grid .grupo-card-title-area p {
+  margin-top: 4px;
+  font-size: .82rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+#grupos-grid .grupo-count-pill {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid color-mix(in srgb, var(--success) 28%, transparent);
+  font-size: .72rem;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+#grupos-grid .grupo-toggle-membros {
+  margin-top: 12px;
+  width: 100%;
+  justify-content: center;
+  min-height: 36px;
+  font-size: .8rem;
+}
+
+#grupos-grid .grupo-membros-collapsible {
+  display: none;
+  margin-top: 12px;
+}
+
+#grupos-grid .grupo-membros-collapsible.open {
+  display: flex;
+}
+
+#grupos-grid .grupo-convite-box,
+#grupos-grid .grupo-convites-pendentes,
+#grupos-grid .grupo-actions {
+  margin-top: 12px;
+}

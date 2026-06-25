@@ -1,0 +1,1070 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Accenture RoomFlow</title>
+  <link rel="icon" href="../assets/favicon.ico"/>
+  <link rel="stylesheet" href="../css/theme.css"/>
+  <link rel="stylesheet" href="../css/sidebar.css"/>
+  <link rel="stylesheet" href="../css/dashboard.css"/>
+  <link rel="stylesheet" href="../css/salas.css"/>
+  <link rel="stylesheet" href="../css/reservas.css"/>
+  <link rel="stylesheet" href="../css/calendario.css"/>
+  <link rel="stylesheet" href="../css/usuarios.css"/>
+  <link rel="stylesheet" href="../css/grupos.css"/>
+  <link rel="stylesheet" href="../css/ia.css"/>
+  <link rel="stylesheet" href="../css/relatorios.css"/>
+  <link rel="stylesheet" href="../css/assentos.css"/>
+  <link rel="stylesheet" href="../css/configuracoes.css"/>
+</head>
+<body>
+<div class="dashboard-layout">
+
+  <!-- ══════════════ SIDEBAR ══════════════════════════════════════ -->
+  <aside class="sidebar">
+    <a href="#" class="sidebar-brand">
+      <img src="../assets/logo.png" alt="Accenture" class="sidebar-logo-img"/>
+      <span class="sidebar-brand-text">Accenture</span>
+    </a>
+    <nav class="sidebar-nav" aria-label="Navegação principal">
+      <a class="nav-item" data-section="dashboard">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard
+      </a>
+      <a class="nav-item" data-section="salas">
+        <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg>Salas
+      </a>
+      <a class="nav-item" data-section="assentos">
+        <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M5 7V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2"/><path d="M5 17v2M19 17v2"/></svg>Assentos
+      </a>
+      <a class="nav-item" data-section="reservas">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Reservas
+      </a>
+      <a class="nav-item" data-section="calendario">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>Calendário
+      </a>
+      <a class="nav-item" data-section="usuarios">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Usuários
+      </a>
+      <a class="nav-item" data-section="grupos">
+        <svg viewBox="0 0 24 24">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Grupos
+      </a>
+      <a class="nav-item" data-section="ia">
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3"/></svg>IA<span class="nav-badge">Novo</span>
+      </a>
+      <a class="nav-item" data-section="relatorios">
+        <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>Relatórios
+      </a>
+      <a class="nav-item" data-section="configuracoes">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>Configurações
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ══════════════ MAIN ═════════════════════════════════════════ -->
+  <div class="dashboard-main">
+
+    <!-- HEADER -->
+    <header class="dash-header">
+      <div class="dash-search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="search" placeholder="Buscar salas, reservas, usuários..."/>
+      </div>
+      <div class="dash-header-end">
+        <!-- Theme 3-button -->
+        <div class="theme-switcher" role="group" aria-label="Tema">
+          <button type="button" class="theme-btn" data-theme-btn="light" title="Claro" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+          <button type="button" class="theme-btn" data-theme-btn="system" title="Sistema (detecta automaticamente)" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </button>
+          <button type="button" class="theme-btn" data-theme-btn="dark" title="Escuro" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+        </div>
+
+        <!-- Notifications -->
+        <div style="position:relative">
+          <button class="icon-btn has-dot" id="notif-btn" aria-label="Notificações">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+          <div class="dropdown-panel notif-dropdown" id="notif-panel">
+            <div class="notif-header">
+              <h4>Notificações</h4>
+              <span class="notif-count" id="notif-count">3 novas</span>
+            </div>
+            <div class="notif-list" id="notif-list"></div>
+          </div>
+        </div>
+
+        <!-- User -->
+        <div style="position:relative">
+          <button class="user-chip" id="user-chip">
+            <div class="user-avatar" id="user-avatar">U</div>
+            <div class="user-chip-info">
+              <strong id="user-display-name">Usuário</strong>
+              <small id="user-role-label">Usuário</small>
+            </div>
+            <svg class="user-chip-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="dropdown-panel account-dropdown" id="account-panel">
+            <div class="account-dropdown-head">
+              <strong id="account-dropdown-name">Usuário</strong>
+              <small id="account-dropdown-email">-</small>
+            </div>
+            <div class="account-dropdown-menu">
+              <button class="account-menu-item" id="go-profile">
+                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Meu perfil
+              </button>
+              <button class="account-menu-item" id="go-config">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2"/></svg>Configurações
+              </button>
+              <div class="account-menu-divider"></div>
+              <button class="account-menu-item danger" data-action="logout">
+                <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sair
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ════════════ CONTENT ════════════════════════════════════════ -->
+    <main class="dash-content">
+
+      <!-- ═══ DASHBOARD ═══════════════════════════════════════════ -->
+      <section class="dash-section" data-section="dashboard">
+  <div class="welcome-row">
+    <div>
+      <h1>Olá, bem-vindo de volta 👋</h1>
+      <p class="date" id="current-date"></p>
+    </div>
+
+    <div class="dashboard-status-pill">
+      <span class="status-dot"></span>
+      Sistema em tempo real
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <span>Reservas hoje</span>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <path d="M16 2v4M8 2v4M3 10h18"/>
+          </svg>
+        </div>
+      </div>
+      <div class="stat-value">0</div>
+      <span class="stat-trend up">Hoje</span>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <span>Salas cadastradas</span>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 21h18M5 21V7l7-4 7 4v14"/>
+          </svg>
+        </div>
+      </div>
+      <div class="stat-value">0</div>
+      <span class="stat-trend up">Total</span>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <span>Reservas ativas</span>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M18 20V10M12 20V4M6 20v-6"/>
+          </svg>
+        </div>
+      </div>
+      <div class="stat-value">0</div>
+      <span class="stat-trend up">Confirmadas</span>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <span>Usuários ativos</span>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          </svg>
+        </div>
+      </div>
+      <div class="stat-value">0</div>
+      <span class="stat-trend up">Sistema</span>
+    </div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-card" id="dashboard-status-card">
+      <div class="chart-card-header">
+        <div>
+          <h3>Distribuição das reservas</h3>
+          <small>Resumo por status das reservas</small>
+        </div>
+      </div>
+
+      <div class="dashboard-donut-layout">
+        <div class="dashboard-donut" id="dashboard-status-donut">
+          <div class="dashboard-donut-center">
+            <strong id="dashboard-status-total">0</strong>
+            <span>reservas</span>
+          </div>
+        </div>
+
+        <div class="dashboard-donut-legend" id="dashboard-status-legend">
+          <div class="dashboard-donut-legend-item">
+            <div class="dashboard-donut-legend-left">
+              <span class="dashboard-donut-dot" style="background:var(--success)"></span>
+              <span>Confirmadas</span>
+            </div>
+            <strong>0</strong>
+          </div>
+
+          <div class="dashboard-donut-legend-item">
+            <div class="dashboard-donut-legend-left">
+              <span class="dashboard-donut-dot" style="background:var(--error)"></span>
+              <span>Canceladas</span>
+            </div>
+            <strong>0</strong>
+          </div>
+
+          <div class="dashboard-donut-legend-item">
+            <div class="dashboard-donut-legend-left">
+              <span class="dashboard-donut-dot" style="background:var(--warning)"></span>
+              <span>Outras</span>
+            </div>
+            <strong>0</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <h3>Salas mais usadas</h3>
+          <small>Ranking baseado nas reservas</small>
+        </div>
+      </div>
+
+      <div class="bar-chart">
+        <div class="grupo-empty">
+          Carregando salas mais usadas...
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-row">
+    <div class="meetings-card">
+      <div class="meetings-card-header">
+        <div>
+          <h3>Reservas de hoje</h3>
+          <small>Reservas confirmadas para o dia atual</small>
+        </div>
+
+        <button
+  class="btn-link"
+  type="button"
+  data-go-section="reservas"
+>
+  Ver minhas reservas
+</button>
+      </div>
+
+      <div class="grupo-empty">
+        Carregando reservas de hoje...
+      </div>
+    </div>
+
+    <div class="avail-card">
+      <div class="avail-card-header">
+        <div>
+          <h3>Salas cadastradas</h3>
+          <small>Últimas salas disponíveis no sistema</small>
+        </div>
+      </div>
+
+      <div id="avail-rooms-list">
+        <div class="grupo-empty">
+          Carregando salas...
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+      <!-- ═══ SALAS ════════════════════════════════════════════════ -->
+      <section class="dash-section" data-section="salas">
+        <div class="section-header">
+          <div class="section-header-left"><h2>Salas</h2><p id="salas-count">6 salas encontradas</p></div>
+          <div class="section-header-actions"><button class="btn-primary" id="btn-nova-sala"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nova Sala</button></div>
+        </div>
+        <div class="salas-filters">
+          <div class="salas-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="salas-search-input" placeholder="Buscar por nome..."/></div>
+          <select class="filter-select" id="filter-status"><option value="">Todos status</option><option value="green">Disponível</option><option value="blue">Reservada</option><option value="yellow">Manutenção</option></select>
+          <select class="filter-select" id="filter-cap"><option value="">Todas capacidades</option><option value="small">Até 8 pessoas</option><option value="medium">9–20 pessoas</option><option value="large">21+ pessoas</option></select>
+        </div>
+        <div class="rooms-grid" id="salas-grid"></div>
+      </section>
+
+      <!-- ═══ ASSENTOS ═════════════════════════════════════════════ -->
+      <section class="dash-section" data-section="assentos">
+        <div class="section-header"><div class="section-header-left"><h2>Assentos</h2><p>Mapa de ocupação em tempo real</p></div></div>
+        <div class="assentos-stats">
+          <div class="assento-stat"><div class="assento-stat-value purple" id="stat-total">24</div><div class="assento-stat-label">Total</div></div>
+          <div class="assento-stat"><div class="assento-stat-value green"  id="stat-free">15</div><div class="assento-stat-label">Disponíveis</div></div>
+          <div class="assento-stat"><div class="assento-stat-value blue"   id="stat-reserved">4</div><div class="assento-stat-label">Reservados</div></div>
+          <div class="assento-stat"><div class="assento-stat-value red"    id="stat-busy">5</div><div class="assento-stat-label">Ocupados</div></div>
+        </div>
+        <!-- Rendered dynamically by assentos.js — one card per sala -->
+        <div id="assentos-salas-container"></div>
+      </section>
+
+      <!-- ═══ RESERVAS ═════════════════════════════════════════════ -->
+     <section class="dash-section" data-section="reservas">
+  <div class="reservas-hero-header">
+    <div class="reservas-hero-title">
+      <span class="reservas-hero-icon">
+        <svg viewBox="0 0 24 24">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <path d="M16 2v4M8 2v4M3 10h18"/>
+        </svg>
+      </span>
+
+      <div>
+        <h2>Reservas</h2>
+        <p>Visualize suas reservas e filtre por período ou status.</p>
+      </div>
+    </div>
+
+    <div class="reservas-filtros">
+      <div class="reservas-filter-field">
+        <label>De</label>
+        <input type="date" id="reservas-filter-inicio"/>
+      </div>
+
+      <div class="reservas-filter-field">
+        <label>Até</label>
+        <input type="date" id="reservas-filter-fim"/>
+      </div>
+
+      <div class="reservas-filter-field">
+        <label>Status</label>
+        <select id="reservas-filter-status">
+          <option value="">Todos</option>
+          <option value="CONFIRMADA">Confirmadas</option>
+          <option value="CANCELADA">Canceladas</option>
+        </select>
+      </div>
+
+      <button type="button" class="btn-ghost" id="reservas-filter-clear">
+        Limpar
+      </button>
+    </div>
+  </div>
+
+  <div class="reservas-day-header reservas-summary-row">
+    <strong id="reservas-date">Minhas reservas</strong>
+    <span class="reservas-count" id="reservas-count">0 reservas</span>
+  </div>
+
+  <div id="reservas-container" data-reservas-list>
+    <div class="grupo-empty">
+      Carregando reservas...
+    </div>
+  </div>
+
+  <div id="reservas-view-wrap" style="display:none"></div>
+</section>
+
+      <!-- ═══ CALENDÁRIO ════════════════════════════════════════════ -->
+      <section class="dash-section" data-section="calendario">
+        <div class="section-header"><div class="section-header-left"><h2>Calendário</h2><p id="cal-month-label"></p></div></div>
+        <div class="calendario-layout">
+          <div class="cal-wrap">
+            <div class="cal-nav">
+              <button class="icon-btn" id="cal-prev"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+              <h3 id="cal-title"></h3>
+              <button class="icon-btn" id="cal-next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
+          </div>
+          <div class="cal-sidebar-card">
+            <div class="cal-sidebar-title" id="cal-sidebar-title">Hoje</div>
+            <div class="cal-sidebar-date" id="cal-sidebar-date"></div>
+            <div id="cal-event-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ USUÁRIOS ═════════════════════════════════════════════ -->
+      <section class="dash-section" data-section="usuarios">
+        <div class="section-header">
+          <div class="section-header-left"><h2>Usuários</h2><p id="users-count">5 usuários no sistema</p></div>
+          <div class="section-header-actions"><button class="btn-primary" data-modal-open="novo-usuario-modal"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Novo Usuário</button></div>
+        </div>
+        <div class="users-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="users-search-input" placeholder="Buscar por nome ou e-mail..."/></div>
+        <div class="users-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Usuário</th><th>Time</th><th>Perfil</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody id="users-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+      <!-- ═══ GRUPOS ═════════════════════════════════════════════ -->
+          <section class="dash-section" data-section="grupos">
+      <div class="section-header">
+        <div class="section-header-left">
+          <h2>Grupos</h2>
+          <p id="grupos-count">Carregando grupos...</p>
+        </div>
+
+        <div class="section-header-actions" id="grupos-actions">
+          <button class="btn-primary" id="btn-novo-grupo">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 5v14M5 12h14"/>
+            </svg>
+            Novo Grupo
+          </button>
+        </div>
+      </div>
+
+      <div class="users-search">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input type="text" id="grupos-search-input" placeholder="Buscar grupo..."/>
+      </div>
+
+      <div id="grupos-grid" class="grupos-grid"></div>
+    </section>
+      
+      <!-- ═══ IA ═══════════════════════════════════════════════════ -->
+      <section class="dash-section" data-section="ia">
+  <div class="ia-hero">
+    <div class="ia-hero-icon">
+      <svg viewBox="0 0 24 24">
+        <rect x="4" y="4" width="16" height="16" rx="2"/>
+        <path d="M9 9h6v6H9z"/>
+        <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3"/>
+      </svg>
+    </div>
+
+    <div class="ia-hero-text">
+      <h2>Centro de IA <span class="ia-beta">Beta</span></h2>
+      <p>Use a IA para encontrar a melhor sala e os melhores assentos para reservas em grupo.</p>
+    </div>
+  </div>
+
+  <div class="ia-layout">
+    <div class="ia-panel">
+      <h3>Reserva em grupo</h3>
+      <p>Selecione um grupo, data e horário para a IA analisar as melhores opções.</p>
+
+      <div class="field" style="margin-bottom:14px">
+        <label class="field-label">Grupo</label>
+        <select id="ia-grupo-select" class="field-input">
+          <option value="">Carregando grupos...</option>
+        </select>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px">
+        <div class="field">
+          <label class="field-label">Data</label>
+          <input id="ia-data" type="date" class="field-input"/>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Início</label>
+          <input id="ia-inicio" type="time" class="field-input" value="10:00"/>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Fim</label>
+          <input id="ia-fim" type="time" class="field-input" value="12:00"/>
+        </div>
+      </div>
+<div class="field" style="margin-bottom:16px">
+  <label class="field-label">Proximidade dos assentos</label>
+
+  <select id="ia-criterio-proximidade" class="field-input">
+    <option value="OBRIGATORIO">Obrigatoriamente próximos</option>
+    <option value="PREFERENCIAL" selected>Preferencialmente próximos</option>
+    <option value="NENHUM">Não precisa ser próximo</option>
+  </select>
+
+  <small style="color:var(--text-muted);display:block;margin-top:6px">
+    Obrigatório rejeita opções distantes. Preferencial aceita, mas prioriza assentos próximos.
+  </small>
+</div>
+      <button class="btn-primary" id="btn-ia-analisar-grupo" style="width:100%">
+        <svg viewBox="0 0 24 24">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+        Analisar opções com IA
+      </button>
+
+      <div id="ia-pedido-preview" style="margin-top:14px;color:var(--text-muted);font-size:.82rem"></div>
+    </div>
+
+    <div class="ia-panel">
+      <h3>Resultado da IA</h3>
+      <p>Opções recomendadas com compatibilidade e assentos sugeridos.</p>
+
+      <div id="ia-results">
+        <div class="ia-empty">
+          <div class="ia-empty-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="4" y="4" width="16" height="16" rx="2"/>
+              <path d="M9 9h6v6H9z"/>
+            </svg>
+          </div>
+
+          <strong>Pronto para analisar</strong>
+          <p>Escolha um grupo e horário para a IA buscar as melhores salas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+      <!-- ═══ RELATÓRIOS ════════════════════════════════════════════ -->
+      <section class="dash-section" data-section="relatorios" id="section-relatorios">
+        <div class="section-header">
+          <div class="section-header-left"><h2>Relatórios</h2><p>Análises detalhadas e métricas</p></div>
+          <div class="section-header-actions"><button class="btn-ghost" id="btn-export-pdf"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Exportar PDF</button></div>
+        </div>
+        <div class="relatorios-mini-stats">
+          <div class="mini-stat"><div class="mini-stat-label">Total de reservas (mês)</div><div class="mini-stat-value">248</div></div>
+          <div class="mini-stat"><div class="mini-stat-label">Horas reservadas</div><div class="mini-stat-value">1.142h</div></div>
+          <div class="mini-stat"><div class="mini-stat-label">Sala mais usada</div><div class="mini-stat-value">Olimpo</div></div>
+          <div class="mini-stat"><div class="mini-stat-label">Taxa de no-show</div><div class="mini-stat-value">4.2%</div></div>
+        </div>
+        <div class="relatorios-charts">
+          <div class="chart-card">
+            <div class="chart-card-header"><div><h3>Tendência de ocupação</h3><small>Últimos 7 dias</small></div></div>
+            <svg id="relatorio-area-chart" viewBox="0 0 400 180" style="width:100%;overflow:visible">
+              <line x1="40" y1="20" x2="390" y2="20" stroke="var(--border)" stroke-width="0.5"/>
+              <line x1="40" y1="55" x2="390" y2="55" stroke="var(--border)" stroke-width="0.5"/>
+              <line x1="40" y1="90" x2="390" y2="90" stroke="var(--border)" stroke-width="0.5"/>
+              <line x1="40" y1="125" x2="390" y2="125" stroke="var(--border)" stroke-width="0.5"/>
+              <text x="5" y="23"  fill="var(--text-muted)" font-size="8" font-family="DM Sans">100</text>
+              <text x="10" y="58" fill="var(--text-muted)" font-size="8" font-family="DM Sans">75</text>
+              <text x="10" y="93" fill="var(--text-muted)" font-size="8" font-family="DM Sans">50</text>
+              <text x="10" y="128" fill="var(--text-muted)" font-size="8" font-family="DM Sans">25</text>
+              <defs><linearGradient id="relG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7c3aed" stop-opacity="0.25"/><stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/></linearGradient></defs>
+              <path d="M40,56 L100,36 L160,32 L220,45 L280,65 L340,100 L390,120 L390,140 L40,140 Z" fill="url(#relG)"/>
+              <polyline points="40,56 100,36 160,32 220,45 280,65 340,100 390,120" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round"/>
+              <polyline points="40,66 100,48 160,44 220,58 280,78 340,110 390,128" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-dasharray="5,3"/>
+              <circle cx="40"  cy="56"  r="4" fill="#7c3aed"/><circle cx="40"  cy="56"  r="2" fill="white"/>
+              <circle cx="160" cy="32"  r="4" fill="#7c3aed"/><circle cx="160" cy="32"  r="2" fill="white"/>
+              <circle cx="280" cy="65"  r="4" fill="#7c3aed"/><circle cx="280" cy="65"  r="2" fill="white"/>
+              <circle cx="390" cy="120" r="4" fill="#7c3aed"/><circle cx="390" cy="120" r="2" fill="white"/>
+              <text x="35"  y="158" fill="var(--text-muted)" font-size="9" font-family="DM Sans">Seg</text>
+              <text x="94"  y="158" fill="var(--text-muted)" font-size="9" font-family="DM Sans">Ter</text>
+              <text x="153" y="158" fill="var(--text-muted)" font-size="9" font-family="DM Sans">Qua</text>
+              <text x="212" y="158" fill="var(--text-muted)" font-size="9" font-family="DM Sans">Qui</text>
+              <text x="271" y="158" fill="var(--text-muted)" font-size="9" font-family="DM Sans">Sex</text>
+              <text x="330" y="158" fill="var(--text-muted)" font-size="9" font-family="DM Sans">Sáb</text>
+              <text x="376" y="158" fill="var(--text-muted)" font-size="9" font-family="DM Sans">Dom</text>
+              <circle cx="55"  cy="172" r="4" fill="#7c3aed"/><text x="63" y="176" fill="var(--text-muted)" font-size="9" font-family="DM Sans">Ocupação %</text>
+              <line x1="130" y1="172" x2="142" y2="172" stroke="#22c55e" stroke-width="2" stroke-dasharray="4,2"/><text x="146" y="176" fill="var(--text-muted)" font-size="9" font-family="DM Sans">Salas usadas</text>
+            </svg>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><h3>Distribuição por sala</h3></div></div>
+            <div class="donut-wrap">
+              <div class="donut-chart"><svg viewBox="0 0 140 140" id="donut-svg"></svg><div class="donut-center"><strong>248</strong><span>reservas</span></div></div>
+              <div class="donut-legend" id="donut-legend"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Bar charts -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">
+          <div class="chart-card"><div class="chart-card-header"><div><h3>Uso mensal por sala</h3></div></div>
+            <div class="bar-chart">
+              <div class="bar-row"><span class="bar-label">Olimpo</span><div class="bar-track"><div class="bar-fill" data-width="92" style="width:0"></div></div><span class="bar-value">92%</span></div>
+              <div class="bar-row"><span class="bar-label">Aurora</span><div class="bar-track"><div class="bar-fill" data-width="78" style="width:0"></div></div><span class="bar-value">78%</span></div>
+              <div class="bar-row"><span class="bar-label">Pégaso</span><div class="bar-track"><div class="bar-fill" data-width="65" style="width:0"></div></div><span class="bar-value">65%</span></div>
+              <div class="bar-row"><span class="bar-label">Hermes</span><div class="bar-track"><div class="bar-fill" data-width="48" style="width:0"></div></div><span class="bar-value">48%</span></div>
+            </div>
+          </div>
+          <div class="chart-card"><div class="chart-card-header"><div><h3>Pico de uso por horário</h3></div></div>
+            <div class="bar-chart">
+              <div class="bar-row"><span class="bar-label">08h</span><div class="bar-track"><div class="bar-fill" data-width="30" style="width:0"></div></div><span class="bar-value">30%</span></div>
+              <div class="bar-row"><span class="bar-label">10h</span><div class="bar-track"><div class="bar-fill" data-width="85" style="width:0"></div></div><span class="bar-value">85%</span></div>
+              <div class="bar-row"><span class="bar-label">14h</span><div class="bar-track"><div class="bar-fill" data-width="95" style="width:0"></div></div><span class="bar-value">95%</span></div>
+              <div class="bar-row"><span class="bar-label">16h</span><div class="bar-track"><div class="bar-fill" data-width="70" style="width:0"></div></div><span class="bar-value">70%</span></div>
+              <div class="bar-row"><span class="bar-label">18h</span><div class="bar-track"><div class="bar-fill" data-width="20" style="width:0"></div></div><span class="bar-value">20%</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ CONFIGURAÇÕES ════════════════════════════════════════ -->
+      <section class="dash-section" data-section="configuracoes">
+        <div class="section-header"><div class="section-header-left"><h2>Configurações</h2><p>Personalize sua experiência</p></div></div>
+        <div class="config-layout">
+          <div class="config-nav">
+            <div class="config-nav-item active" data-config="perfil"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</div>
+            <div class="config-nav-item" data-config="preferencias"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2"/></svg>Preferências</div>
+            <div class="config-nav-item" data-config="notificacoes"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>Notificações</div>
+            <div class="config-nav-item" data-config="conta"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/></svg>Conta</div>
+          </div>
+          <div class="config-panel">
+            <div class="config-section active" id="config-perfil">
+              <div class="config-section-title">Perfil</div>
+              <div class="avatar-row">
+                <div class="avatar-preview" id="config-avatar" title="Clique para trocar a foto">U</div>
+                <div><p style="font-size:.875rem;font-weight:600;color:var(--text)">Foto de perfil</p><p class="avatar-upload-hint">Clique no avatar para trocar · JPG ou PNG</p></div>
+              </div>
+              <input type="file" id="avatar-file-input" accept="image/*" style="display:none"/>
+              <div class="field"><label class="field-label">Nome</label><input id="config-name-input" type="text" class="field-input"/></div>
+              <div class="field"><label class="field-label">E-mail</label><input id="config-email-input" type="email" class="field-input"/></div>
+              <button class="btn-primary" id="save-profile-btn" style="align-self:flex-start">Salvar alterações</button>
+            </div>
+            <div class="config-section" id="config-preferencias">
+              <div class="config-section-title">Preferências</div>
+              <div class="config-row">
+                <div class="config-row-info"><strong>Tema</strong><p>Claro, escuro ou automático (detecta o PC)</p></div>
+                <div class="theme-switcher" role="group">
+                  <button type="button" class="theme-btn" data-theme-btn="light" title="Claro" aria-pressed="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
+                  <button type="button" class="theme-btn" data-theme-btn="system" title="Sistema" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></button>
+                  <button type="button" class="theme-btn" data-theme-btn="dark" title="Escuro" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+                </div>
+              </div>
+              <div class="config-row">
+                <div class="config-row-info"><strong>Modo escuro rápido</strong><p>Ativar/desativar diretamente</p></div>
+                <label class="toggle-switch"><input type="checkbox" id="config-dark-toggle"/><span class="toggle-track"></span></label>
+              </div>
+            </div>
+            <div class="config-section" id="config-notificacoes">
+              <div class="config-section-title">Notificações</div>
+              <div class="config-row"><div class="config-row-info"><strong>Reservas confirmadas</strong><p>Avisar quando confirmada</p></div><label class="toggle-switch"><input type="checkbox" checked/><span class="toggle-track"></span></label></div>
+              <div class="config-row"><div class="config-row-info"><strong>Conflitos de horário</strong><p>Avisar sobre conflitos</p></div><label class="toggle-switch"><input type="checkbox" checked/><span class="toggle-track"></span></label></div>
+              <div class="config-row"><div class="config-row-info"><strong>Sugestões da IA</strong><p>Receber recomendações</p></div><label class="toggle-switch"><input type="checkbox"/><span class="toggle-track"></span></label></div>
+            </div>
+            <div class="config-section" id="config-conta">
+              <div class="config-section-title">Conta</div>
+              <div class="config-row"><div class="config-row-info"><strong>Encerrar sessão</strong><p>Sair da conta neste dispositivo</p></div><button class="btn-danger" data-action="logout"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sair</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     MODAIS
+     ══════════════════════════════════════════════════════════════════ -->
+
+<!-- Sala detail -->
+<div class="modal-overlay" id="sala-detail-modal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header"><h3 id="detail-title">Sala</h3><button class="modal-close" data-modal-close="sala-detail-modal"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div id="detail-img-wrap"></div>
+    <div class="room-detail-badges"><span id="detail-status" class="badge badge--green">Disponível</span><span class="room-detail-meta"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span id="detail-floor"></span></span><span class="room-detail-meta"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span id="detail-cap"></span></span></div>
+    <p class="resources-label">Recursos</p>
+    <div class="resources-tags" id="detail-tags"></div>
+    <div class="modal-footer">
+      <button class="btn-ghost" id="detail-edit-btn"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Editar</button>
+      <button class="btn-danger" id="detail-delete-btn"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>Excluir</button>
+      <button class="btn-primary" id="detail-reserve-btn" style="margin-left:auto"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Reservar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Nova / Editar Sala -->
+<div class="modal-overlay" id="nova-sala-modal">
+  <div class="modal">
+    <div class="modal-header"><h3 id="nova-sala-title">Nova Sala</h3><button class="modal-close" data-modal-close="nova-sala-modal"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <form id="sala-form" class="modal-body">
+      <div class="field"><label class="field-label">Nome</label><input id="sala-form-name" type="text" class="field-input" placeholder="Sala Olimpo" required/></div>
+      <div class="form-row">
+        <div class="field"><label class="field-label">Capacidade</label><input id="sala-form-cap" type="number" class="field-input" min="1" max="200" value="4"/></div>
+        <div class="field"><label class="field-label">Status</label>
+          <select id="sala-form-status" class="field-input"><option value="green">Disponível</option><option value="blue">Reservada</option><option value="yellow">Manutenção</option></select>
+        </div>
+      </div>
+      <div class="field"><label class="field-label">Localização</label><input id="sala-form-floor" type="text" class="field-input" placeholder="Andar 5 - Bloco A"/></div>
+      <div class="field">
+        <label class="field-label">Recursos disponíveis</label>
+        <div class="recursos-chips" id="recursos-chips-wrap" style="margin-top:4px">
+          <!-- Preenchido dinamicamente por salas.js -->
+        </div>
+        <input id="recurso-outro-input" type="text" class="field-input" placeholder="Digite e pressione Enter para adicionar..." style="margin-top:8px;display:none"/>
+      </div>
+      <div class="field"><label class="field-label">Foto da sala</label>
+        <div class="foto-upload-area" id="foto-preview-wrap">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <strong>Adicionar foto</strong><p>Clique ou arraste uma imagem (JPG, PNG)</p>
+        </div>
+        <input type="file" id="sala-foto-input" accept="image/*" style="display:none"/>
+      </div>
+      <div class="modal-footer"><button type="button" class="btn-ghost" data-modal-close="nova-sala-modal">Cancelar</button><button type="submit" class="btn-primary" id="sala-form-submit">Cadastrar</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- Nova Reserva (stepper 3 etapas) -->
+<div class="modal-overlay" id="nova-reserva-modal">
+  <div class="modal">
+    <div class="modal-header"><h3>Nova Reserva</h3><button class="modal-close" data-modal-close="nova-reserva-modal"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div class="stepper">
+      <div class="step-item active"><span class="step-num">1</span><span class="step-line"></span></div>
+      <div class="step-item"><span class="step-num">2</span><span class="step-line"></span></div>
+      <div class="step-item"><span class="step-num">3</span></div>
+    </div>
+    <div class="reserva-step-panel active">
+      <div class="field"><label class="field-label">Título da reunião</label><input id="reserva-titulo" type="text" class="field-input" placeholder="Planejamento Q2"/></div>
+      <div class="form-row">
+        <div class="field"><label class="field-label">Data</label><input id="reserva-data" type="date" class="field-input"/></div>
+        <div class="field"><label class="field-label">Início</label><input id="reserva-inicio" type="time" class="field-input" value="09:00"/></div>
+      </div>
+      <div class="field"><label class="field-label">Término</label><input id="reserva-fim" type="time" class="field-input" value="10:00"/></div>
+      <label class="checkbox-row"><input type="checkbox" id="reserva-recorrente"/><span class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="checkbox-label">🔄 Reserva recorrente (semanal)</span></label>
+      <div class="modal-footer"><button class="btn-ghost" data-modal-close="nova-reserva-modal">Cancelar</button><button class="btn-primary" id="reserva-next-1">Continuar</button></div>
+    </div>
+    <div class="reserva-step-panel">
+      <div class="field"><label class="field-label">Sala</label><select id="reserva-room-select" class="field-input"><option value="">Selecione...</option></select></div>
+      <div class="field"><label class="field-label">Participantes</label><input id="reserva-pax" type="number" class="field-input" min="1" max="100" value="3"/></div>
+      <div class="modal-footer"><button class="btn-ghost" id="reserva-back-2">Voltar</button><button class="btn-primary" id="reserva-next-2">Continuar</button></div>
+    </div>
+    <div class="reserva-step-panel">
+      <div id="reserva-summary" style="background:var(--accent-faint);border:1px solid var(--border);border-radius:var(--r-md);padding:14px;font-size:.875rem;color:var(--text)"></div>
+      <div class="modal-footer"><button class="btn-ghost" id="reserva-back-3">Voltar</button><button class="btn-primary" id="reserva-final-btn">Confirmar reserva</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- Reserva detail -->
+<div class="modal-overlay" id="reserva-detail-modal">
+  <div class="modal">
+    <div class="modal-header"><h3>Detalhes da Reserva</h3><button class="modal-close" data-modal-close="reserva-detail-modal"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div class="modal-body">
+      <div class="reserva-detail-header">
+        <strong id="reserva-detail-title">—</strong>
+        <div class="reserva-detail-row"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg><span id="reserva-detail-room">—</span></div>
+        <div class="reserva-detail-row"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span id="reserva-detail-time">—</span></div>
+        <div class="reserva-detail-row"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span id="reserva-detail-pax">—</span></div>
+      </div>
+      <div style="text-align:center"><span class="badge badge--green">Confirmada</span></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-danger" id="reserva-detail-delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>Cancelar reserva</button>
+      <button class="btn-ghost" data-modal-close="reserva-detail-modal">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Calendário — detalhe do evento (com botão excluir) -->
+<div class="modal-overlay" id="cal-event-detail-modal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-header">
+      <h3>Detalhes do Evento</h3>
+      <button class="modal-close" data-modal-close="cal-event-detail-modal"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div style="background:var(--accent-faint);border:1px solid var(--border);border-radius:var(--r-md);padding:16px;display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:1.05rem;font-weight:700;color:var(--text)" id="cal-detail-title">—</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--text-muted)">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span id="cal-detail-date">—</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--text-muted)">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span id="cal-detail-time">—</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--text-muted)">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg>
+          <span id="cal-detail-room">—</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--text-muted)">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          <span id="cal-detail-pax">—</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-danger" id="cal-detail-delete-btn">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        Excluir evento
+      </button>
+      <button class="btn-ghost" data-modal-close="cal-event-detail-modal">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Novo Usuário -->
+<div class="modal-overlay" id="novo-usuario-modal">
+  <div class="modal">
+    <div class="modal-header"><h3>Novo Usuário</h3><button class="modal-close" data-modal-close="novo-usuario-modal"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <form id="novo-usuario-form" class="modal-body">
+      <div class="form-grid-2">
+        <div class="field"><label class="field-label">Nome</label><input id="nu-name" type="text" class="field-input" placeholder="Ana Silva" required/></div>
+        <div class="field"><label class="field-label">E-mail</label><input id="nu-email" type="email" class="field-input" placeholder="ana@empresa.com" required/></div>
+      </div>
+      <div class="form-grid-2">
+        <div class="field"><label class="field-label">Time</label><input id="nu-team" type="text" class="field-input" placeholder="Engineering"/></div>
+        <div class="field"><label class="field-label">Perfil</label><select id="nu-role" class="field-input"><option value="user">Usuário</option><option value="lead">Tech Lead</option><option value="admin">Admin</option></select></div>
+      </div>
+      <div class="modal-footer"><button type="button" class="btn-ghost" data-modal-close="novo-usuario-modal">Cancelar</button><button type="submit" class="btn-primary">Adicionar</button></div>
+    </form>
+  </div>
+</div>
+
+
+<div class="modal-overlay" id="grupo-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="grupo-modal-title">Novo Grupo</h3>
+
+      <button class="modal-close" type="button" data-modal-close="grupo-modal">
+        <svg viewBox="0 0 24 24">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <form id="grupo-form" class="modal-body">
+      <input type="hidden" id="grupo-id"/>
+
+      <div class="field">
+        <label class="field-label">Nome do grupo</label>
+        <input
+          id="grupo-nome"
+          type="text"
+          class="field-input"
+          placeholder="Squad Backend"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label class="field-label">Descrição</label>
+        <textarea
+          id="grupo-descricao"
+          class="field-input"
+          rows="3"
+          placeholder="Grupo usado para reservas em equipe"
+        ></textarea>
+      </div>
+
+      <!-- ADMIN escolhe o líder -->
+      <div class="field" id="grupo-lider-wrapper">
+        <label class="field-label">Líder do grupo</label>
+        <select id="grupo-lider" class="field-input">
+          <option value="">Selecione o líder</option>
+        </select>
+
+        <small style="color:var(--text-muted);display:block;margin-top:6px">
+          Somente administradores podem escolher o líder manualmente.
+        </small>
+      </div>
+
+      <!-- ADMIN pode adicionar usuários diretamente -->
+      <div class="field" id="grupo-usuarios-wrapper">
+        <label class="field-label">Usuários do grupo</label>
+        <div id="grupo-usuarios-lista" class="grupo-usuarios-lista"></div>
+
+        <small style="color:var(--text-muted);display:block;margin-top:6px">
+          Admin pode adicionar usuários diretamente. Tech Leader deve convidar por e-mail.
+        </small>
+      </div>
+
+      <!-- Convites ao criar/editar grupo -->
+      <div class="field" id="grupo-convites-criacao-wrapper">
+        <label class="field-label">Convidar pessoas por e-mail</label>
+
+        <textarea
+          id="grupo-emails-convite-criacao"
+          class="field-input"
+          rows="3"
+          placeholder="Digite um ou mais e-mails separados por vírgula. Ex: dev1@teste.com, dev2@teste.com"
+        ></textarea>
+
+        <small style="color:var(--text-muted);display:block;margin-top:6px">
+          As pessoas só entram no grupo depois de aceitarem o convite.
+        </small>
+      </div>
+
+      <!-- Convite rápido quando abrir modal só para convidar -->
+      <div class="field" id="grupo-convite-wrapper" style="display:none">
+        <label class="field-label">Enviar convite</label>
+
+        <div style="display:flex;gap:8px">
+          <input
+            id="grupo-email-convite"
+            type="email"
+            class="field-input"
+            placeholder="email@empresa.com"
+          />
+
+          <button type="button" class="btn-primary" id="btn-enviar-convite-grupo">
+            Convidar
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-ghost" data-modal-close="grupo-modal">
+          Cancelar
+        </button>
+
+        <button type="submit" class="btn-primary">
+          Salvar grupo
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="sala-assentos-modal">
+  <div class="modal modal-large">
+    <div class="modal-header">
+      <div>
+        <h3 id="sala-assentos-title">Assentos da sala</h3>
+        <p id="sala-assentos-subtitle" style="color:var(--text-muted);font-size:.85rem;margin-top:4px">
+          Escolha data e horário para ver disponibilidade
+        </p>
+      </div>
+
+      <button class="modal-close" data-modal-close="sala-assentos-modal">
+        <svg viewBox="0 0 24 24">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+        <div class="field" style="min-width:160px">
+          <label class="field-label">Data</label>
+          <input type="date" class="field-input" id="sala-assentos-data">
+        </div>
+
+        <div class="field" style="min-width:130px">
+          <label class="field-label">Início</label>
+          <input type="time" class="field-input" id="sala-assentos-inicio" value="10:00">
+        </div>
+
+        <div class="field" style="min-width:130px">
+          <label class="field-label">Fim</label>
+          <input type="time" class="field-input" id="sala-assentos-fim" value="12:00">
+        </div>
+
+        <button type="button" class="btn-primary" id="btn-atualizar-assentos-sala">
+          Atualizar
+        </button>
+      </div>
+
+      <div id="sala-assentos-info" style="margin-bottom:12px;color:var(--text-muted);font-size:.85rem"></div>
+
+      <div class="seats-grid" id="sala-assentos-grid"></div>
+
+      <div class="seats-legend" style="margin-top:18px">
+        <div class="seats-legend-item">
+          <span class="seats-legend-dot" style="background:var(--success)"></span>
+          Livre
+        </div>
+
+        <div class="seats-legend-item">
+          <span class="seats-legend-dot" style="background:var(--info)"></span>
+          Selecionado
+        </div>
+
+        <div class="seats-legend-item">
+          <span class="seats-legend-dot" style="background:var(--error)"></span>
+          Ocupado
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     SCRIPTS (ordem importa)
+     ═══════════════════════════════════════════════════════════════════ -->
+  <script>
+  /* Modal helpers globais */
+  function openModal(id) {
+    const modal = document.getElementById(id);
+
+    if (modal) {
+      modal.classList.add('open');
+      modal.style.display = 'flex';
+    }
+  }
+
+  function closeModal(id) {
+    const modal = document.getElementById(id);
+
+    if (modal) {
+      modal.classList.remove('open');
+      modal.style.display = '';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-modal-open]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        openModal(btn.dataset.modalOpen);
+      });
+    });
+
+    document.querySelectorAll('[data-modal-close]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        closeModal(btn.dataset.modalClose);
+      });
+    });
+
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', event => {
+        if (event.target === overlay) {
+          closeModal(overlay.id);
+        }
+      });
+    });
+
+    
+  });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+
+<script src="../js/auth.js"></script>
+<script src="../js/storage.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/salas.js"></script>
+<script src="../js/assentos.js"></script>
+<script src="../js/reservas.js"></script>
+<script src="../js/calendario.js"></script>
+<script src="../js/usuarios.js"></script>
+<script src="../js/grupos.js"></script>
+<script src="../js/ia.js"></script>
+<script src="../js/relatorios.js"></script>
+<script src="../js/configuracoes.js"></script>
+<script src="../js/dashboard.js"></script>
+</body>
+</html>
+   

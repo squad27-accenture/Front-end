@@ -1,0 +1,29 @@
+/* ══ usuarios.css ═══════════════════════════════════════════════════ */
+.users-search {
+  display: flex; align-items: center; gap: 9px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-md); padding: 11px 16px; margin-bottom: 16px;
+}
+.users-search svg { width: 15px; height: 15px; stroke: var(--text-muted); fill: none; stroke-width: 2; flex-shrink: 0; }
+.users-search input { border: none; background: transparent; outline: none; color: var(--text); font-size: 0.875rem; width: 100%; }
+.users-search input::placeholder { color: var(--text-muted); }
+
+.users-table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th { padding: 11px 16px; text-align: left; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--border); background: var(--surface-2); white-space: nowrap; }
+.data-table td { padding: 13px 16px; border-bottom: 1px solid var(--border); font-size: 0.875rem; color: var(--text); vertical-align: middle; }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr { transition: background var(--trans); }
+.data-table tbody tr:hover { background: var(--accent-faint); }
+.user-cell { display: flex; align-items: center; gap: 11px; }
+.user-cell .user-avatar { width: 32px; height: 32px; font-size: 0.8rem; flex-shrink: 0; }
+.user-cell strong { display: block; font-size: 0.875rem; font-weight: 600; color: var(--text); }
+.user-cell small { font-size: 0.75rem; color: var(--text-muted); }
+.role-badge { font-size: 0.72rem; font-weight: 700; padding: 2px 9px; border-radius: var(--r-sm); }
+.role-badge.admin { background: var(--error-bg); color: var(--error); }
+.role-badge.lead  { background: var(--accent-faint); color: var(--accent); }
+.role-badge.user  { background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); }
+.action-btn { width: 28px; height: 28px; border-radius: var(--r-xs); display: flex; align-items: center; justify-content: center; color: var(--text-muted); border: 1px solid var(--border); cursor: pointer; transition: all var(--trans); }
+.action-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+.action-btn:hover { background: var(--error-bg); color: var(--error); border-color: var(--error); }
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
