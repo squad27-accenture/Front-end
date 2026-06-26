@@ -78,3 +78,18 @@
 .foto-upload-area strong { font-size: 0.85rem; color: var(--text); }
 .foto-upload-area p { font-size: 0.75rem; color: var(--text-muted); }
 .foto-preview { width: 100%; height: 120px; object-fit: cover; border-radius: var(--r-sm); margin-bottom: 6px; }
+
+.room-card-img-wrap {
+  width: 100%;
+  height: 170px;
+  overflow: hidden;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  background: var(--surface-2);
+}
+
+.room-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

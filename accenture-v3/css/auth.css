@@ -111,3 +111,20 @@
 @media (max-width: 480px) {
   .floating-cards { grid-template-columns: 1fr; }
 }
+
+/* DEMO: esconder login social */
+.auth-divider,
+.login-divider,
+.social-divider,
+.social-login,
+.login-social,
+.auth-social,
+.google-login,
+.google-btn,
+.btn-google,
+#google-login,
+#btn-google-login,
+[data-provider="google"],
+[data-login-google] {
+  display: none !important;
+}

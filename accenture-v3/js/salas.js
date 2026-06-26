@@ -91,34 +91,64 @@
     return hora.length === 5 ? `${hora}:00` : hora;
   }
 
-  function getSalaImg(sala) {
-    return RF.getSalaImg?.(sala.id) || sala.img || null;
-  }
+  function obterPosicaoAssento(assento) {
+  const candidatos = [
+    assento?.posicao,
+    assento?.posicaoAssento,
+    assento?.numero,
+    assento?.numeroAssento,
+    assento?.label,
+    assento?.id
+  ];
 
-  function imgTag(sala, cls) {
-    const src = getSalaImg(sala);
+  for (const valor of candidatos) {
+    if (valor === null || valor === undefined || valor === '') continue;
 
-    if (src) {
-      return `
-        <img
-          class="${cls}"
-          src="${src}"
-          alt="${esc(sala.name)}"
-          onerror="this.style.display='none'"
-        >
-      `;
+    const match = String(valor).match(/\d+/);
+    const numero = match ? Number(match[0]) : Number(valor);
+
+    if (Number.isFinite(numero) && numero > 0) {
+      return numero;
     }
-
-    return `
-      <div class="${cls}-placeholder">
-        <svg viewBox="0 0 24 24">
-          <rect x="3" y="3" width="18" height="18" rx="2"/>
-          <circle cx="8.5" cy="8.5" r="1.5"/>
-          <polyline points="21 15 16 10 5 21"/>
-        </svg>
-      </div>
-    `;
   }
+
+  return null;
+}
+
+ const SALAS_IMAGENS_DEMO = [
+  "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
+  "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=80",
+  "https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=900&q=80",
+  "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80",
+  "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80",
+  "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?auto=format&fit=crop&w=900&q=80"
+];
+
+function getSalaImg(sala) {
+  const salva = RF.getSalaImg?.(sala.id);
+
+  if (salva) return salva;
+  if (sala.img) return sala.img;
+
+  const id = Number(sala.id || 0);
+  const index = Math.abs(id) % SALAS_IMAGENS_DEMO.length;
+
+  return SALAS_IMAGENS_DEMO[index];
+}
+
+function imgTag(sala, cls) {
+  const src = getSalaImg(sala);
+
+  return `
+    <img
+      class="${cls}"
+      src="${src}"
+      alt="${esc(sala.name || 'Sala')}"
+      loading="lazy"
+      onerror="this.src='https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80'"
+    >
+  `;
+}
 
   function aplicarPermissaoAdmin() {
     const btnNovaSala = document.getElementById('btn-nova-sala');
@@ -513,15 +543,16 @@
       grid.innerHTML = assentos
         .sort((a, b) => Number(a.posicao || 0) - Number(b.posicao || 0))
         .map(assento => {
-          const tipo = formatarTipoAssentoSala(assento.tipoAssento);
-          const equipamentos = formatarEquipamentosSala(assento.equipamentos);
+  const tipo = formatarTipoAssentoSala(assento.tipoAssento);
+  const equipamentos = formatarEquipamentosSala(assento.equipamentos);
+  const posicao = obterPosicaoAssento(assento);
 
-          return `
-            <button
+  return `
+      <button
               class="seat-btn ${assento.state}"
               data-seat-id="${esc(assento.id)}"
               data-seat-label="${esc(assento.label)}"
-              data-seat-posicao="${Number(assento.posicao)}"
+              data-seat-posicao="${posicao || ''}"
               data-state="${assento.state}"
               ${assento.state === 'busy' ? 'disabled' : ''}
               title="Assento ${esc(assento.label)} • ${esc(tipo)} • ${esc(equipamentos || 'Sem equipamentos')}"
@@ -541,7 +572,7 @@
                 <path d="M5 17v2M19 17v2"/>
               </svg>
 
-              <strong>${esc(assento.label)}</strong>
+              <strong>${esc(assento.label || `Assento ${posicao || '?'}`)}</strong>
 
               <span style="font-size:.62rem;text-align:center;line-height:1.1">
                 ${esc(tipo)}
@@ -569,12 +600,29 @@
     btn.classList.add('reserved');
     btn.dataset.state = 'reserved';
 
-    assentoSelecionadoModal = {
-      id: btn.dataset.seatId,
-      label: btn.dataset.seatLabel,
-      posicao: Number(btn.dataset.seatPosicao)
-    };
+    const posicao = Number(btn.dataset.seatPosicao);
 
+if (!Number.isFinite(posicao) || posicao <= 0) {
+  toast(
+    'Erro no assento',
+    'Esse assento está sem posição válida. Verifique o cadastro dos assentos.',
+    'error'
+  );
+
+  console.error('Assento sem posição válida:', {
+    seatId: btn.dataset.seatId,
+    label: btn.dataset.seatLabel,
+    posicaoDataset: btn.dataset.seatPosicao
+  });
+
+  return;
+}
+
+assentoSelecionadoModal = {
+  id: btn.dataset.seatId,
+  label: btn.dataset.seatLabel || `Assento ${posicao}`,
+  posicao
+};
     const selectedInfo = document.getElementById('sala-assento-selecionado-info');
     const btnReservar = document.getElementById('btn-confirmar-reserva-sala');
 
@@ -614,12 +662,14 @@
   const fim = document.getElementById('sala-assentos-fim')?.value || '12:00';
 
   const payload = {
-    salaId: Number(salaId),
-    posicaoAssento: Number(assentoSelecionadoModal.posicao),
-    dataReserva: data,
-    horarioInicio: normalizarHora(inicio),
-    horarioFim: normalizarHora(fim)
-  };
+  salaId: Number(salaId),
+  posicaoAssento: Number(assentoSelecionadoModal.posicao),
+  dataReserva: data,
+  horarioInicio: normalizarHora(inicio),
+  horarioFim: normalizarHora(fim)
+};
+
+console.log("PAYLOAD RESERVA:", payload);
 
   const btnReservar = document.getElementById('btn-confirmar-reserva-sala');
 
@@ -628,6 +678,17 @@
       btnReservar.disabled = true;
       btnReservar.textContent = 'Reservando...';
     }
+
+if (!Number.isFinite(payload.posicaoAssento) || payload.posicaoAssento <= 0) {
+  toast(
+    'Erro ao reservar',
+    'A posição do assento está inválida.',
+    'error'
+  );
+
+  console.error('Payload inválido:', payload);
+  return;
+}
 
     const response = await apiFetch('/reservas', {
       method: 'POST',

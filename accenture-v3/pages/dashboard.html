@@ -831,7 +831,6 @@
   </div>
 </div>
 
-
 <div class="modal-overlay" id="grupo-modal">
   <div class="modal">
     <div class="modal-header">
@@ -868,9 +867,9 @@
         ></textarea>
       </div>
 
-      <!-- ADMIN escolhe o líder -->
       <div class="field" id="grupo-lider-wrapper">
         <label class="field-label">Líder do grupo</label>
+
         <select id="grupo-lider" class="field-input">
           <option value="">Selecione o líder</option>
         </select>
@@ -880,9 +879,9 @@
         </small>
       </div>
 
-      <!-- ADMIN pode adicionar usuários diretamente -->
       <div class="field" id="grupo-usuarios-wrapper">
         <label class="field-label">Usuários do grupo</label>
+
         <div id="grupo-usuarios-lista" class="grupo-usuarios-lista"></div>
 
         <small style="color:var(--text-muted);display:block;margin-top:6px">
@@ -890,23 +889,14 @@
         </small>
       </div>
 
-      <!-- Convites ao criar/editar grupo -->
-      <div class="field" id="grupo-convites-criacao-wrapper">
-        <label class="field-label">Convidar pessoas por e-mail</label>
+      <div class="field" id="grupo-convites-criacao-wrapper" style="display:none">
+  <input
+    id="grupo-emails-convite-criacao"
+    type="hidden"
+    value=""
+  />
+</div>
 
-        <textarea
-          id="grupo-emails-convite-criacao"
-          class="field-input"
-          rows="3"
-          placeholder="Digite um ou mais e-mails separados por vírgula. Ex: dev1@teste.com, dev2@teste.com"
-        ></textarea>
-
-        <small style="color:var(--text-muted);display:block;margin-top:6px">
-          As pessoas só entram no grupo depois de aceitarem o convite.
-        </small>
-      </div>
-
-      <!-- Convite rápido quando abrir modal só para convidar -->
       <div class="field" id="grupo-convite-wrapper" style="display:none">
         <label class="field-label">Enviar convite</label>
 
