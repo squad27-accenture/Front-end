@@ -112,19 +112,30 @@
   .floating-cards { grid-template-columns: 1fr; }
 }
 
-/* DEMO: esconder login social */
+
+/* Esconder login social na tela de login */
 .auth-divider,
 .login-divider,
 .social-divider,
-.social-login,
-.login-social,
 .auth-social,
+.login-social,
+.social-login,
+.social-buttons,
 .google-login,
 .google-btn,
 .btn-google,
+.btn-social,
 #google-login,
 #btn-google-login,
 [data-provider="google"],
 [data-login-google] {
+  display: none !important;
+}
+
+/* Esconder textos/divisores de login social */
+.or-divider,
+.divider,
+.login-options,
+.auth-options {
   display: none !important;
 }

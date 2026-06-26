@@ -1,480 +1,462 @@
-/* ══ reservas.js — reservas reais do backend ═══════════════════════ */
+/* ══ reservas.js — reservas reais agrupando reserva em grupo ═══════ */
 
 (function () {
-  let reservas = [];
-  let reservaParaCancelar = null;
-  let filtrosReservas = {
-  inicio: "",
-  fim: "",
-  status: ""
-};
+  let reservasRaw = [];
+  let inicializado = false;
 
-let filtrosReservasLigados = false;
-
-  function toast(title, msg, type = 'info') {
-    if (typeof showToast === 'function') {
+  function toast(title, msg, type = "info") {
+    if (typeof showToast === "function") {
       showToast(title, msg, type);
     } else {
       console.log(`[${type}] ${title}: ${msg}`);
     }
   }
 
-  function formatarData(data) {
-    if (!data) return '—';
+  function esc(v) {
+    return String(v ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
 
-    const [ano, mes, dia] = String(data).split('-');
+  function somenteData(valor) {
+    if (!valor) return "";
 
-    if (!ano || !mes || !dia) return data;
+    const texto = String(valor);
+
+    if (texto.includes("T")) return texto.split("T")[0];
+
+    return texto.slice(0, 10);
+  }
+
+  function formatarData(valor) {
+    const data = somenteData(valor);
+
+    if (!data || !data.includes("-")) return valor || "—";
+
+    const [ano, mes, dia] = data.split("-");
 
     return `${dia}/${mes}/${ano}`;
   }
 
-  function formatarHora(hora) {
-    if (!hora) return '—';
-    return String(hora).slice(0, 5);
+  function formatarHora(valor) {
+    if (!valor) return "—";
+
+    return String(valor).slice(0, 5);
   }
 
-  function statusBadge(status) {
-    const s = status || 'CONFIRMADA';
-
-    if (s === 'CANCELADA') return 'badge--red';
-    if (s === 'CONFIRMADA') return 'badge--green';
-
-    return 'badge--blue';
+  function normalizarStatus(status) {
+    return String(status || "CONFIRMADA").toUpperCase();
   }
 
-  function normalizarStatusReserva(status) {
-  return String(status || "CONFIRMADA").toUpperCase();
-}
+  function getStatusLabel(status) {
+    const s = normalizarStatus(status);
 
-function reservasFiltradas() {
-  return reservas.filter(r => {
-    const data = r.dataReserva || "";
-    const status = normalizarStatusReserva(r.statusReserva || r.status);
+    if (s.includes("CANCEL")) return "Cancelada";
+    if (s.includes("CONFIRM")) return "Confirmada";
 
-    if (filtrosReservas.inicio && data < filtrosReservas.inicio) {
-      return false;
-    }
-
-    if (filtrosReservas.fim && data > filtrosReservas.fim) {
-      return false;
-    }
-
-    if (filtrosReservas.status && status !== filtrosReservas.status) {
-      return false;
-    }
-
-    return true;
-  });
-}
-
-function wireFiltrosReservas() {
-  if (filtrosReservasLigados) return;
-
-  filtrosReservasLigados = true;
-
-  const inicio = document.getElementById("reservas-filter-inicio");
-  const fim = document.getElementById("reservas-filter-fim");
-  const status = document.getElementById("reservas-filter-status");
-  const limpar = document.getElementById("reservas-filter-clear");
-
-  if (inicio) {
-    inicio.addEventListener("change", () => {
-      filtrosReservas.inicio = inicio.value;
-      renderReservas();
-    });
+    return s;
   }
 
-  if (fim) {
-    fim.addEventListener("change", () => {
-      filtrosReservas.fim = fim.value;
-      renderReservas();
-    });
+  function getStatusClass(status) {
+    const s = normalizarStatus(status);
+
+    if (s.includes("CANCEL")) return "badge--red";
+
+    return "badge--green";
   }
 
-  if (status) {
-    status.addEventListener("change", () => {
-      filtrosReservas.status = status.value;
-      renderReservas();
-    });
+  function getReservaId(r) {
+    return r.id || r.reservaId || r.codigo || null;
   }
 
-  if (limpar) {
-    limpar.addEventListener("click", () => {
-      filtrosReservas = {
-        inicio: "",
-        fim: "",
-        status: ""
-      };
-
-      if (inicio) inicio.value = "";
-      if (fim) fim.value = "";
-      if (status) status.value = "";
-
-      renderReservas();
-    });
-  }
-}
-
-  function ensureCancelReservaModal() {
-  if (document.getElementById('cancel-reserva-modal')) return;
-
-  const modal = document.createElement('div');
-  modal.className = 'modal-overlay';
-  modal.id = 'cancel-reserva-modal';
-
-  modal.innerHTML = `
-    <div class="modal cancel-reserva-modal">
-      <div class="cancel-reserva-icon">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 9v4"/>
-          <path d="M12 17h.01"/>
-          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-        </svg>
-      </div>
-
-      <div class="cancel-reserva-content">
-        <h3>Cancelar reserva?</h3>
-        <p id="cancel-reserva-desc">
-          Essa ação vai cancelar sua reserva e liberar o assento para outras pessoas.
-        </p>
-      </div>
-
-      <div class="field">
-        <label class="field-label">Motivo do cancelamento</label>
-        <textarea
-          id="cancel-reserva-motivo"
-          class="field-input"
-          rows="3"
-          placeholder="Ex: Não vou mais precisar da sala"
-        ></textarea>
-      </div>
-
-      <div class="cancel-reserva-actions">
-        <button type="button" class="btn-ghost" id="btn-fechar-cancel-reserva">
-          Voltar
-        </button>
-
-        <button type="button" class="btn-danger-custom" id="btn-confirmar-cancel-reserva">
-          Cancelar reserva
-        </button>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(modal);
-
-  modal.addEventListener('click', event => {
-    if (event.target === modal) {
-      fecharModalCancelarReserva();
-    }
-  });
-
-  document.getElementById('btn-fechar-cancel-reserva')?.addEventListener('click', fecharModalCancelarReserva);
-
-  document.getElementById('btn-confirmar-cancel-reserva')?.addEventListener('click', async () => {
-    if (!reservaParaCancelar) return;
-
-    const motivo = document.getElementById('cancel-reserva-motivo')?.value.trim()
-      || 'Cancelada pelo usuário';
-
-    await cancelarReserva(reservaParaCancelar.id, motivo);
-
-    fecharModalCancelarReserva();
-  });
-}
-
-function abrirModalCancelarReserva(id) {
-  const reserva = reservas.find(r => Number(r.id) === Number(id));
-
-  if (!reserva) return;
-
-  reservaParaCancelar = reserva;
-
-  ensureCancelReservaModal();
-
-  const desc = document.getElementById('cancel-reserva-desc');
-  const motivo = document.getElementById('cancel-reserva-motivo');
-
-  if (desc) {
-    desc.innerHTML = `
-      Você está cancelando a reserva em
-      <strong>${reserva.nomeSala || reserva.salaNome || 'Sala'}</strong>,
-      no dia <strong>${formatarData(reserva.dataReserva)}</strong>,
-      das <strong>${formatarHora(reserva.horarioInicio)} às ${formatarHora(reserva.horarioFim)}</strong>.
-      O assento será liberado para outras pessoas.
-    `;
+  function getSalaId(r) {
+    return r.salaId || r.idSala || r.sala?.id || null;
   }
 
-  if (motivo) {
-    motivo.value = '';
-  }
-
-  const modal = document.getElementById('cancel-reserva-modal');
-
-  if (modal) {
-    modal.classList.add('open');
-    modal.style.display = 'flex';
-  }
-}
-
-function fecharModalCancelarReserva() {
-  const modal = document.getElementById('cancel-reserva-modal');
-
-  if (modal) {
-    modal.classList.remove('open');
-    modal.style.display = '';
-  }
-
-  reservaParaCancelar = null;
-}
-
-  async function carregarReservasBackend() {
-    const response = await apiFetch('/reservas/historico');
-
-    if (!response || !response.ok) {
-      const texto = response ? await response.text() : '';
-      throw new Error(texto || 'Erro ao buscar reservas.');
-    }
-
-    reservas = await response.json();
-
-    return reservas;
-  }
-
-  function acharContainerReservas() {
-  const containerVisivel =
-    document.getElementById('reservas-container') ||
-    document.querySelector('[data-reservas-list]') ||
-    document.getElementById('reservas-list') ||
-    document.getElementById('reservas-grid') ||
-    document.getElementById('reservas-timeline');
-
-  if (containerVisivel) {
-    containerVisivel.style.display = '';
-    return containerVisivel;
-  }
-
-  const viewWrap = document.getElementById('reservas-view-wrap');
-
-  if (viewWrap) {
-    viewWrap.style.display = '';
-    return viewWrap;
-  }
-
-  return null;
-}
-
-  function acharTabelaReservas() {
+  function getSalaNome(r) {
     return (
-      document.getElementById('reservas-tbody') ||
-      document.getElementById('reservas-table-body')
+      r.salaNome ||
+      r.nomeSala ||
+      r.sala?.nome ||
+      r.nomeDaSala ||
+      `Sala ${getSalaId(r) || ""}`
     );
   }
 
- function renderReservas() {
-  const tbody = acharTabelaReservas();
-  const container = acharContainerReservas();
-  const count = document.getElementById('reservas-count');
-
-  const lista = reservasFiltradas();
-
-  if (count) {
-    count.textContent = `${lista.length} reserva${lista.length !== 1 ? 's' : ''}`;
+  function getUsuarioNome(r) {
+    return (
+      r.usuarioNome ||
+      r.nomeUsuario ||
+      r.usuario?.nome ||
+      r.usuario?.username ||
+      r.usuario?.name ||
+      r.usuarioEmail ||
+      r.emailUsuario ||
+      r.usuario?.email ||
+      "Usuário"
+    );
   }
 
-  if (tbody) {
-    renderTabela(tbody, lista);
-    return;
+  function getUsuarioEmail(r) {
+    return (
+      r.usuarioEmail ||
+      r.emailUsuario ||
+      r.usuario?.email ||
+      ""
+    );
   }
 
-  if (container) {
-    renderCards(container, lista);
-    return;
+  function getPosicao(r) {
+    return (
+      r.posicao ||
+      r.posicaoAssento ||
+      r.numeroAssento ||
+      r.assento?.posicao ||
+      r.assento?.numero ||
+      r.assentoId ||
+      null
+    );
   }
 
-  console.warn('Nenhum container de reservas encontrado no HTML.');
-}
+  function getCodigoGrupo(r) {
+    return (
+      r.codigoGrupo ||
+      r.codigo_grupo ||
+      r.grupoCodigo ||
+      r.codigoReservaGrupo ||
+      null
+    );
+  }
 
-  function renderTabela(tbody, lista = reservasFiltradas()) {
-    if (!lista.length) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px">
-            Nenhuma reserva encontrada.
-          </td>
-        </tr>
+  function normalizarReserva(r) {
+    return {
+      raw: r,
+      id: getReservaId(r),
+      codigoGrupo: getCodigoGrupo(r),
+      salaId: getSalaId(r),
+      salaNome: getSalaNome(r),
+      dataReserva: somenteData(r.dataReserva || r.data || r.dia),
+      horarioInicio: r.horarioInicio || r.inicio || r.horaInicio,
+      horarioFim: r.horarioFim || r.fim || r.horaFim,
+      posicao: getPosicao(r),
+      status: normalizarStatus(r.statusReserva || r.status || r.situacao),
+      usuarioNome: getUsuarioNome(r),
+      usuarioEmail: getUsuarioEmail(r)
+    };
+  }
+
+  function aplicarFiltros(lista) {
+    const inicio = document.getElementById("reservas-filter-inicio")?.value || "";
+    const fim = document.getElementById("reservas-filter-fim")?.value || "";
+    const status = document.getElementById("reservas-filter-status")?.value || "";
+
+    return lista.filter(r => {
+      const data = r.dataReserva;
+
+      if (inicio && data < inicio) return false;
+      if (fim && data > fim) return false;
+
+      if (status) {
+        const statusAtual = normalizarStatus(r.status);
+
+        if (!statusAtual.includes(status)) return false;
+      }
+
+      return true;
+    });
+  }
+
+  function agruparReservas(listaNormalizada) {
+    const mapa = new Map();
+
+    listaNormalizada.forEach(r => {
+      const ehGrupo = !!r.codigoGrupo;
+
+      const chave = ehGrupo
+        ? `GRUPO-${r.codigoGrupo}-${r.salaId}-${r.dataReserva}-${r.horarioInicio}-${r.horarioFim}`
+        : `INDIVIDUAL-${r.id || Math.random()}`;
+
+      if (!mapa.has(chave)) {
+        mapa.set(chave, {
+          tipo: ehGrupo ? "GRUPO" : "INDIVIDUAL",
+          codigoGrupo: r.codigoGrupo,
+          salaId: r.salaId,
+          salaNome: r.salaNome,
+          dataReserva: r.dataReserva,
+          horarioInicio: r.horarioInicio,
+          horarioFim: r.horarioFim,
+          status: r.status,
+          reservas: [],
+          assentos: [],
+          usuarios: []
+        });
+      }
+
+      const grupo = mapa.get(chave);
+
+      grupo.reservas.push(r);
+
+      if (r.posicao && !grupo.assentos.includes(Number(r.posicao))) {
+        grupo.assentos.push(Number(r.posicao));
+      }
+
+      const usuarioChave = r.usuarioEmail || r.usuarioNome;
+
+      if (usuarioChave && !grupo.usuarios.some(u => u.chave === usuarioChave)) {
+        grupo.usuarios.push({
+          chave: usuarioChave,
+          nome: r.usuarioNome,
+          email: r.usuarioEmail
+        });
+      }
+
+      if (normalizarStatus(r.status).includes("CONFIRM")) {
+        grupo.status = "CONFIRMADA";
+      }
+    });
+
+    return Array.from(mapa.values())
+      .map(item => {
+        item.assentos.sort((a, b) => a - b);
+
+        if (!item.assentos.length && item.reservas.length) {
+          item.assentos = item.reservas
+            .map(r => Number(r.posicao))
+            .filter(Boolean)
+            .sort((a, b) => a - b);
+        }
+
+        return item;
+      })
+      .sort((a, b) => {
+        const dataA = `${a.dataReserva || ""} ${a.horarioInicio || ""}`;
+        const dataB = `${b.dataReserva || ""} ${b.horarioInicio || ""}`;
+
+        return dataB.localeCompare(dataA);
+      });
+  }
+
+  function renderReservas() {
+    const container =
+      document.getElementById("reservas-container") ||
+      document.querySelector("[data-reservas-list]") ||
+      document.getElementById("reservas-view-wrap");
+
+    const count = document.getElementById("reservas-count");
+
+    if (!container) {
+      console.error("Container de reservas não encontrado.");
+      return;
+    }
+
+    const normalizadas = reservasRaw.map(normalizarReserva);
+    const filtradas = aplicarFiltros(normalizadas);
+    const agrupadas = agruparReservas(filtradas);
+
+    if (count) {
+      count.textContent = `${agrupadas.length} reserva(s)`;
+    }
+
+    if (!agrupadas.length) {
+      container.innerHTML = `
+        <div class="grupo-empty">
+          Nenhuma reserva encontrada.
+        </div>
       `;
       return;
     }
 
-    tbody.innerHTML = lista.map(r => `
-      <tr>
-        <td>
-          <strong>${r.nomeSala || r.salaNome || 'Sala'}</strong>
-          <small style="display:block;color:var(--text-muted)">
-            Assento ${r.posicaoAssento || '—'}
-          </small>
-        </td>
-
-        <td>${formatarData(r.dataReserva)}</td>
-
-        <td>${formatarHora(r.horarioInicio)} - ${formatarHora(r.horarioFim)}</td>
-
-        <td>
-          <span class="badge ${statusBadge(r.statusReserva)}">
-            ${r.statusReserva || 'CONFIRMADA'}
-          </span>
-        </td>
-
-        <td>${r.codigoGrupo || 'Individual'}</td>
-
-        <td>
-          ${
-            r.statusReserva !== 'CANCELADA'
-              ? `
-                <button class="action-btn" data-cancelar-reserva="${r.id}" title="Cancelar">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M18 6 6 18M6 6l12 12"/>
-                  </svg>
-                </button>
-              `
-              : ''
-          }
-        </td>
-      </tr>
-    `).join('');
-
-    wireCancelar(tbody);
-  }
-
-  function renderCards(container, lista = reservasFiltradas()) {
-  if (!lista.length) {
     container.innerHTML = `
-      <div class="grupo-empty">
-        Nenhuma reserva encontrada.
+      <div class="reservas-grid-list">
+        ${agrupadas.map(renderReservaCard).join("")}
       </div>
     `;
-    return;
+
+    wireReservaActions(container);
   }
 
-  container.innerHTML = lista.map(r => {
-    const status = normalizarStatusReserva(r.statusReserva || r.status);
-    const cancelada = status === "CANCELADA" || status === "CANCELADO";
+  function renderReservaCard(item) {
+    const ehGrupo = item.tipo === "GRUPO";
+    const statusClass = getStatusClass(item.status);
+    const statusLabel = getStatusLabel(item.status);
+
+    const assentosTexto = item.assentos.length
+      ? item.assentos.map(p => `Assento ${p}`).join(", ")
+      : "Assentos não informados";
+
+    const usuariosTexto = item.usuarios.length
+      ? item.usuarios.map(u => u.nome || u.email).join(", ")
+      : "Usuários não informados";
+
+    const tituloTipo = ehGrupo
+      ? `Grupo ${item.codigoGrupo}`
+      : "Individual";
+
+    const quantidadeAssentos = item.assentos.length || item.reservas.length || 1;
 
     return `
-      <div class="grupo-card reserva-card">
+      <div class="reserva-card reserva-card-compact ${ehGrupo ? "reserva-card-grupo" : ""}">
         <div class="reserva-card-main">
-          <div class="reserva-card-icon">
-            ${(r.nomeSala || r.salaNome || 'S')[0].toUpperCase()}
+          <div class="reserva-avatar">
+            ${ehGrupo ? "G" : "S"}
           </div>
 
-          <div class="reserva-card-info">
-            <div class="reserva-card-topline">
-              <h3>${r.nomeSala || r.salaNome || 'Sala'}</h3>
+          <div class="reserva-info">
+            <div class="reserva-title-row">
+              <h3>${esc(item.salaNome)}</h3>
 
-              <span class="badge ${statusBadge(status)}">
-                ${status}
+              <span class="badge ${statusClass}">
+                ${statusLabel}
               </span>
             </div>
 
-            <div class="reserva-card-meta">
-              <span>${formatarData(r.dataReserva)}</span>
-              <span>${formatarHora(r.horarioInicio)} - ${formatarHora(r.horarioFim)}</span>
-              <span>Assento ${r.posicaoAssento || '—'}</span>
-              <span>${r.codigoGrupo ? `Grupo ${r.codigoGrupo}` : 'Individual'}</span>
+            <div class="reserva-meta">
+              <span>${esc(formatarData(item.dataReserva))}</span>
+              <span>•</span>
+              <span>${esc(formatarHora(item.horarioInicio))} - ${esc(formatarHora(item.horarioFim))}</span>
+              <span>•</span>
+              <span>
+                ${
+                  ehGrupo
+                    ? `${quantidadeAssentos} assento(s)`
+                    : `Assento ${esc(item.assentos[0] || item.reservas[0]?.posicao || "—")}`
+                }
+              </span>
+              <span>•</span>
+              <span>${esc(tituloTipo)}</span>
             </div>
+
+            ${
+              ehGrupo
+                ? `
+                  <div class="reserva-group-details">
+                    <div class="reserva-assentos-line">
+                      <strong>Assentos:</strong> ${esc(assentosTexto)}
+                    </div>
+
+                    <div class="reserva-users-line">
+                      <strong>Integrantes:</strong> ${esc(usuariosTexto)}
+                    </div>
+                  </div>
+                `
+                : ""
+            }
           </div>
         </div>
 
-        ${
-          !cancelada
-            ? `
-              <button class="reserva-cancel-btn" data-cancelar-reserva="${r.id}">
-                Cancelar
-              </button>
-            `
-            : ''
-        }
+        <div class="reserva-card-actions">
+          ${
+            normalizarStatus(item.status).includes("CANCEL")
+              ? ""
+              : ehGrupo
+                ? `
+                  <button
+                    type="button"
+                    class="btn-danger btn-reserva-small"
+                    data-cancelar-grupo="${esc(item.codigoGrupo)}"
+                  >
+                    Cancelar grupo
+                  </button>
+                `
+                : `
+                  <button
+                    type="button"
+                    class="btn-danger btn-reserva-small"
+                    data-cancelar-reserva="${esc(item.reservas[0]?.id || "")}"
+                  >
+                    Cancelar
+                  </button>
+                `
+          }
+        </div>
       </div>
     `;
-  }).join('');
+  }
 
-  wireCancelar(container);
-}
+  function wireReservaActions(container) {
+    container.querySelectorAll("[data-cancelar-reserva]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.cancelarReserva;
 
-  function wireCancelar(root) {
-  root.querySelectorAll('[data-cancelar-reserva]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = Number(btn.dataset.cancelarReserva);
-      abrirModalCancelarReserva(id);
-    });
-  });
-}
+        if (!id) return;
 
-  async function cancelarReserva(id, motivo = 'Cancelada pelo usuário') {
-  const btn = document.getElementById('btn-confirmar-cancel-reserva');
+        if (!confirm("Deseja cancelar esta reserva?")) return;
 
-  try {
-    if (btn) {
-      btn.disabled = true;
-      btn.textContent = 'Cancelando...';
-    }
-
-    const response = await apiFetch(`/reservas/${id}/cancelar?motivo=${encodeURIComponent(motivo)}`, {
-      method: 'PUT'
+        await cancelarReservaIndividual(id);
+      });
     });
 
-    if (!response || !response.ok) {
-      const texto = response ? await response.text() : '';
+    container.querySelectorAll("[data-cancelar-grupo]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const codigoGrupo = btn.dataset.cancelarGrupo;
 
-      toast(
-        'Erro ao cancelar',
-        texto || 'Não foi possível cancelar a reserva.',
-        'error'
+        if (!codigoGrupo) return;
+
+        if (!confirm("Deseja cancelar todas as reservas deste grupo?")) return;
+
+        await cancelarReservaGrupo(codigoGrupo);
+      });
+    });
+  }
+
+  async function cancelarReservaIndividual(id) {
+    try {
+      const response = await apiFetch(
+        `/reservas/${id}/cancelar?motivo=${encodeURIComponent("Cancelado pelo usuário")}`,
+        {
+          method: "PUT"
+        }
       );
 
-      return;
-    }
+      if (!response || !response.ok) {
+        const texto = response ? await response.text() : "";
+        toast("Erro ao cancelar", texto || "Não foi possível cancelar a reserva.", "error");
+        return;
+      }
 
-    toast(
-      'Reserva cancelada',
-      'O assento foi liberado com sucesso.',
-      'success'
-    );
+      toast("Reserva cancelada", "A reserva foi cancelada com sucesso.", "success");
 
-    await carregarTudo();
+      await carregarReservas();
 
-  } catch (error) {
-    console.error(error);
-
-    toast(
-      'Erro ao cancelar',
-      'Falha ao comunicar com o servidor.',
-      'error'
-    );
-
-  } finally {
-    if (btn) {
-      btn.disabled = false;
-      btn.textContent = 'Cancelar reserva';
+    } catch (error) {
+      console.error(error);
+      toast("Erro", "Falha ao cancelar reserva.", "error");
     }
   }
-}
 
-  async function carregarTudo() {
-    const container = acharContainerReservas();
-    const tbody = acharTabelaReservas();
+  async function cancelarReservaGrupo(codigoGrupo) {
+    try {
+      const response = await apiFetch(
+        `/reservas/grupo/${encodeURIComponent(codigoGrupo)}/cancelar?motivo=${encodeURIComponent("Cancelado pelo usuário")}`,
+        {
+          method: "PUT"
+        }
+      );
 
-    if (tbody) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px">
-            Carregando reservas...
-          </td>
-        </tr>
-      `;
+      if (!response || !response.ok) {
+        const texto = response ? await response.text() : "";
+        toast("Erro ao cancelar grupo", texto || "Não foi possível cancelar o grupo.", "error");
+        return;
+      }
+
+      toast("Reserva em grupo cancelada", "Todas as reservas do grupo foram canceladas.", "success");
+
+      await carregarReservas();
+
+    } catch (error) {
+      console.error(error);
+      toast("Erro", "Falha ao cancelar reserva em grupo.", "error");
     }
+  }
+
+  async function carregarReservas() {
+    const container =
+      document.getElementById("reservas-container") ||
+      document.querySelector("[data-reservas-list]") ||
+      document.getElementById("reservas-view-wrap");
 
     if (container) {
       container.innerHTML = `
@@ -485,21 +467,29 @@ function fecharModalCancelarReserva() {
     }
 
     try {
-      await carregarReservasBackend();
+      const response = await apiFetch("/reservas/historico");
+
+      if (!response || !response.ok) {
+        const texto = response ? await response.text() : "";
+        throw new Error(texto || "Não foi possível carregar reservas.");
+      }
+
+      const data = await response.json();
+
+      if (Array.isArray(data)) {
+        reservasRaw = data;
+      } else if (Array.isArray(data.content)) {
+        reservasRaw = data.content;
+      } else if (Array.isArray(data.data)) {
+        reservasRaw = data.data;
+      } else {
+        reservasRaw = [];
+      }
+
       renderReservas();
 
     } catch (error) {
       console.error(error);
-
-      if (tbody) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" style="text-align:center;color:var(--error);padding:24px">
-              Erro ao carregar reservas.
-            </td>
-          </tr>
-        `;
-      }
 
       if (container) {
         container.innerHTML = `
@@ -509,13 +499,37 @@ function fecharModalCancelarReserva() {
         `;
       }
 
-      toast('Erro', 'Não foi possível carregar suas reservas.', 'error');
+      toast("Erro", error.message || "Não foi possível carregar reservas.", "error");
     }
   }
-window.initReservas = async function () {
-  wireFiltrosReservas();
-  await carregarTudo();
-};
 
-  window.refreshReservas = carregarTudo;
+  function configurarFiltros() {
+    const inicio = document.getElementById("reservas-filter-inicio");
+    const fim = document.getElementById("reservas-filter-fim");
+    const status = document.getElementById("reservas-filter-status");
+    const clear = document.getElementById("reservas-filter-clear");
+
+    inicio?.addEventListener("change", renderReservas);
+    fim?.addEventListener("change", renderReservas);
+    status?.addEventListener("change", renderReservas);
+
+    clear?.addEventListener("click", () => {
+      if (inicio) inicio.value = "";
+      if (fim) fim.value = "";
+      if (status) status.value = "";
+
+      renderReservas();
+    });
+  }
+
+  window.initReservas = async function () {
+    if (!inicializado) {
+      inicializado = true;
+      configurarFiltros();
+    }
+
+    await carregarReservas();
+  };
+
+  window.refreshReservas = carregarReservas;
 })();
